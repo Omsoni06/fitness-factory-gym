@@ -366,13 +366,13 @@ export default function Pricing() {
                 </div>
                 <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center max-w-2xl mx-auto">
                   <a
-                    href="tel:+919876543210"
+                    href="tel:+919098300823"
                     className="bg-white text-blue-600 hover:bg-gray-100 font-bold py-3 sm:py-4 px-6 sm:px-8 rounded-full text-base sm:text-lg transition-all duration-300 transform hover:scale-105 shadow-xl"
                   >
                     📞 Call Now - Book Today!
                   </a>
                   <a
-                    href="https://wa.me/919876543210"
+                    href="https://wa.me/919098300823"
                     className="border-2 border-white text-white hover:bg-white hover:text-blue-600 font-bold py-3 sm:py-4 px-6 sm:px-8 rounded-full text-base sm:text-lg transition-all duration-300 transform hover:scale-105"
                   >
                     💬 WhatsApp Us

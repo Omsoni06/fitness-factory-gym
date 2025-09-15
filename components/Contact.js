@@ -92,7 +92,7 @@ export default function Contact() {
                       Contact Us
                     </h4>
                     <a
-                      href="tel:+919876543210"
+                      href="tel:+919098300823"
                       className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 sm:py-3 px-4 sm:px-6 rounded-full transition-all duration-300 transform hover:scale-105 text-base sm:text-lg shadow-lg"
                     >
                       📞 +91 98765 43210
@@ -115,14 +115,14 @@ export default function Contact() {
 
               <div className="space-y-4 sm:space-y-6 mb-8 sm:mb-10">
                 <a
-                  href="tel:+919876543210"
+                  href="tel:+919098300823"
                   className="block w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold py-4 sm:py-6 rounded-xl sm:rounded-2xl text-lg sm:text-xl transition-all duration-300 transform hover:scale-105 text-center shadow-2xl"
                 >
                   📞 Call Now for Free Trial
                 </a>
 
                 <a
-                  href="https://wa.me/919876543210"
+                  href="https://wa.me/919098300823"
                   className="block w-full bg-green-600 hover:bg-green-700 text-white font-bold py-4 sm:py-6 rounded-xl sm:rounded-2xl text-lg sm:text-xl transition-all duration-300 transform hover:scale-105 text-center shadow-lg"
                 >
                   💬 WhatsApp Us Directly

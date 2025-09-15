@@ -72,14 +72,14 @@ export default function MobileNavigation() {
             {/* Desktop CTA Buttons - Hidden on Mobile */}
             <div className="hidden lg:flex items-center space-x-3">
               <a
-                href="tel:+919876543210"
+                href="tel:+919098300823"
                 className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 flex items-center space-x-2"
               >
                 <Phone className="w-4 h-4" />
                 <span>Call Now</span>
               </a>
               <a
-                href="https://wa.me/919876543210"
+                href="https://wa.me/919098300823"
                 className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 flex items-center space-x-2"
               >
                 <MessageCircle className="w-4 h-4" />
@@ -122,7 +122,7 @@ export default function MobileNavigation() {
               {/* Mobile CTA Buttons */}
               <div className="pt-4 border-t border-gray-200 space-y-3">
                 <a
-                  href="tel:+919876543210"
+                  href="tel:+919098300823"
                   className="flex items-center justify-center space-x-2 w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-semibold transition-all duration-300"
                   onClick={() => setIsMenuOpen(false)}
                 >
@@ -130,7 +130,7 @@ export default function MobileNavigation() {
                   <span>Call Now - Free Trial</span>
                 </a>
                 <a
-                  href="https://wa.me/919876543210"
+                  href="https://wa.me/919098300823"
                   className="flex items-center justify-center space-x-2 w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg font-semibold transition-all duration-300"
                   onClick={() => setIsMenuOpen(false)}
                 >
