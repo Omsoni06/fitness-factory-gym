@@ -6,36 +6,39 @@ export default function GymTour() {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(0);
+  const [videoModalOpen, setVideoModalOpen] = useState(false);
 
   // Prevent browser back button issues with lightbox
   useEffect(() => {
     const handlePopState = (event) => {
-      if (lightboxOpen) {
+      if (lightboxOpen || videoModalOpen) {
         event.preventDefault();
         setLightboxOpen(false);
+        setVideoModalOpen(false);
         window.history.pushState(null, "", window.location.href);
       }
     };
 
-    if (lightboxOpen) {
-      window.history.pushState({ lightbox: true }, "", window.location.href);
+    if (lightboxOpen || videoModalOpen) {
+      window.history.pushState({ modal: true }, "", window.location.href);
       window.addEventListener("popstate", handlePopState);
     }
 
     return () => {
       window.removeEventListener("popstate", handlePopState);
     };
-  }, [lightboxOpen]);
+  }, [lightboxOpen, videoModalOpen]);
 
-  // Handle ESC key to close lightbox
+  // Handle ESC key to close modals
   useEffect(() => {
     const handleKeyDown = (event) => {
-      if (event.key === "Escape" && lightboxOpen) {
-        closeLightbox();
+      if (event.key === "Escape") {
+        if (lightboxOpen) closeLightbox();
+        if (videoModalOpen) setVideoModalOpen(false);
       }
     };
 
-    if (lightboxOpen) {
+    if (lightboxOpen || videoModalOpen) {
       document.addEventListener("keydown", handleKeyDown);
       document.body.style.overflow = "hidden";
     }
@@ -44,7 +47,7 @@ export default function GymTour() {
       document.removeEventListener("keydown", handleKeyDown);
       document.body.style.overflow = "unset";
     };
-  }, [lightboxOpen]);
+  }, [lightboxOpen, videoModalOpen]);
 
   const gymMedia = [
     // Gym Equipment Photos
@@ -124,6 +127,26 @@ export default function GymTour() {
       image: "https://picsum.photos/800/600?random=8",
       thumbnail: "https://picsum.photos/400/300?random=8",
     },
+
+    // Video Content - Using YouTube embed instead of modal
+    {
+      id: 9,
+      type: "video",
+      category: "tour",
+      title: "Complete Gym Tour",
+      description: "360° walkthrough of our facilities",
+      videoUrl: "https://www.youtube.com/watch?v=ScMzIvxBSi4",
+      thumbnail: "https://picsum.photos/400/300?random=9",
+    },
+    {
+      id: 10,
+      type: "video",
+      category: "workouts",
+      title: "Morning Workout Session",
+      description: "See our members in action during peak hours",
+      videoUrl: "https://www.youtube.com/watch?v=ScMzIvxBSi4",
+      thumbnail: "https://picsum.photos/400/300?random=10",
+    },
   ];
 
   const categories = [
@@ -131,6 +154,8 @@ export default function GymTour() {
     { id: "equipment", name: "Equipment", icon: "🏋️‍♂️" },
     { id: "interior", name: "Interior", icon: "🏢" },
     { id: "trainers", name: "Trainers", icon: "👨‍🏫" },
+    { id: "tour", name: "Virtual Tour", icon: "🎥" },
+    { id: "workouts", name: "Live Workouts", icon: "💪" },
   ];
 
   const filteredMedia =
@@ -145,9 +170,14 @@ export default function GymTour() {
 
   const closeLightbox = () => {
     setLightboxOpen(false);
-    if (window.history.state?.lightbox) {
+    if (window.history.state?.modal) {
       window.history.back();
     }
+  };
+
+  const openVideoModal = (videoUrl) => {
+    // For now, just redirect to YouTube - you can implement a custom modal later
+    window.open(videoUrl, "_blank");
   };
 
   const navigateImage = (direction) => {
@@ -210,45 +240,88 @@ export default function GymTour() {
             <ScaleIn key={item.id} delay={index * 0.1}>
               <div className="bg-white rounded-xl sm:rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
                 <div className="relative">
-                  <div className="relative">
-                    <img
-                      src={item.thumbnail}
-                      alt={item.title}
-                      className="w-full h-48 sm:h-64 object-cover"
-                      onError={(e) => {
-                        // Fallback to a solid color background if image fails to load
-                        e.target.style.display = "none";
-                        e.target.nextSibling.style.display = "flex";
-                      }}
-                    />
-                    {/* Fallback placeholder */}
-                    <div className="w-full h-48 sm:h-64 bg-gradient-to-br from-blue-100 to-green-100 hidden items-center justify-center">
-                      <div className="text-center">
-                        <div className="text-3xl sm:text-4xl mb-2">🏋️‍♂️</div>
-                        <p className="text-gray-600 font-medium text-sm sm:text-base">
-                          Gym Image
-                        </p>
+                  {item.type === "image" ? (
+                    <div className="relative">
+                      <img
+                        src={item.thumbnail}
+                        alt={item.title}
+                        className="w-full h-48 sm:h-64 object-cover"
+                        onError={(e) => {
+                          e.target.style.display = "none";
+                          e.target.nextSibling.style.display = "flex";
+                        }}
+                      />
+                      {/* Fallback placeholder */}
+                      <div className="w-full h-48 sm:h-64 bg-gradient-to-br from-blue-100 to-green-100 hidden items-center justify-center">
+                        <div className="text-center">
+                          <div className="text-3xl sm:text-4xl mb-2">🏋️‍♂️</div>
+                          <p className="text-gray-600 font-medium text-sm sm:text-base">
+                            Gym Image
+                          </p>
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => openLightbox(index)}
+                        className="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-30 transition-all duration-300 flex items-center justify-center group"
+                      >
+                        <div className="opacity-0 group-hover:opacity-100 transition-all duration-300 bg-white rounded-full p-3">
+                          <svg
+                            className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M3 4a1 1 0 011-1h3a1 1 0 011 1v3a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 13a1 1 0 011-1h3a1 1 0 011 1v3a1 1 0 01-1 1H4a1 1 0 01-1-1v-3zM12 4a1 1 0 011-1h3a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1V4zM12 13a1 1 0 011-1h3a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-3z"
+                              clipRule="evenodd"
+                            ></path>
+                          </svg>
+                        </div>
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="relative">
+                      <img
+                        src={item.thumbnail}
+                        alt={item.title}
+                        className="w-full h-48 sm:h-64 object-cover"
+                        onError={(e) => {
+                          e.target.style.display = "none";
+                          e.target.nextSibling.style.display = "flex";
+                        }}
+                      />
+                      {/* Fallback for videos */}
+                      <div className="w-full h-48 sm:h-64 bg-gradient-to-br from-red-100 to-red-200 hidden items-center justify-center">
+                        <div className="text-center">
+                          <div className="text-3xl sm:text-4xl mb-2">🎥</div>
+                          <p className="text-gray-600 font-medium text-sm sm:text-base">
+                            Video Content
+                          </p>
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => openVideoModal(item.videoUrl)}
+                        className="absolute inset-0 bg-black bg-opacity-30 hover:bg-opacity-50 transition-all duration-300 flex items-center justify-center group"
+                      >
+                        <div className="bg-red-600 rounded-full p-3 sm:p-4 group-hover:scale-110 transition-all duration-300 shadow-2xl">
+                          <svg
+                            className="w-6 h-6 sm:w-8 sm:h-8 text-white ml-1"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"
+                              clipRule="evenodd"
+                            ></path>
+                          </svg>
+                        </div>
+                      </button>
+                      <div className="absolute top-3 sm:top-4 left-3 sm:left-4 bg-red-600 text-white px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-bold">
+                        VIDEO
                       </div>
                     </div>
-                    <button
-                      onClick={() => openLightbox(index)}
-                      className="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-30 transition-all duration-300 flex items-center justify-center group"
-                    >
-                      <div className="opacity-0 group-hover:opacity-100 transition-all duration-300 bg-white rounded-full p-3">
-                        <svg
-                          className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600"
-                          fill="currentColor"
-                          viewBox="0 0 20 20"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M3 4a1 1 0 011-1h3a1 1 0 011 1v3a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 13a1 1 0 011-1h3a1 1 0 011 1v3a1 1 0 01-1 1H4a1 1 0 01-1-1v-3zM12 4a1 1 0 011-1h3a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1V4zM12 13a1 1 0 011-1h3a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-3z"
-                            clipRule="evenodd"
-                          ></path>
-                        </svg>
-                      </div>
-                    </button>
-                  </div>
+                  )}
                 </div>
 
                 <div className="p-4 sm:p-6">
@@ -314,7 +387,7 @@ export default function GymTour() {
           </div>
         </FadeInUp>
 
-        {/* Fixed Image Lightbox */}
+        {/* Image Lightbox */}
         {lightboxOpen && (
           <div
             className="fixed inset-0 bg-black bg-opacity-95 z-50 flex items-center justify-center p-4"
