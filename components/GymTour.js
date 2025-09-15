@@ -1,11 +1,8 @@
 "use client";
 import { useState, useEffect } from "react";
 import { FadeInUp, ScaleIn } from "./Animations";
-import ModalVideo from "react-modal-video";
-import "react-modal-video/css/modal-video.css";
 
 export default function GymTour() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(0);
@@ -50,7 +47,7 @@ export default function GymTour() {
   }, [lightboxOpen]);
 
   const gymMedia = [
-    // Gym Equipment Photos - Using Picsum for reliable images
+    // Gym Equipment Photos
     {
       id: 1,
       type: "image",
@@ -127,26 +124,6 @@ export default function GymTour() {
       image: "https://picsum.photos/800/600?random=8",
       thumbnail: "https://picsum.photos/400/300?random=8",
     },
-
-    // Video Content
-    {
-      id: 9,
-      type: "video",
-      category: "tour",
-      title: "Complete Gym Tour",
-      description: "360° walkthrough of our facilities",
-      videoId: "ScMzIvxBSi4", // YouTube video ID
-      thumbnail: "https://picsum.photos/400/300?random=9",
-    },
-    {
-      id: 10,
-      type: "video",
-      category: "workouts",
-      title: "Morning Workout Session",
-      description: "See our members in action during peak hours",
-      videoId: "ScMzIvxBSi4", // YouTube video ID
-      thumbnail: "https://picsum.photos/400/300?random=10",
-    },
   ];
 
   const categories = [
@@ -154,8 +131,6 @@ export default function GymTour() {
     { id: "equipment", name: "Equipment", icon: "🏋️‍♂️" },
     { id: "interior", name: "Interior", icon: "🏢" },
     { id: "trainers", name: "Trainers", icon: "👨‍🏫" },
-    { id: "tour", name: "Virtual Tour", icon: "🎥" },
-    { id: "workouts", name: "Live Workouts", icon: "💪" },
   ];
 
   const filteredMedia =
@@ -175,10 +150,6 @@ export default function GymTour() {
     }
   };
 
-  const openVideoModal = (videoId) => {
-    setIsModalOpen(true);
-  };
-
   const navigateImage = (direction) => {
     if (direction === "prev" && selectedImage > 0) {
       setSelectedImage(selectedImage - 1);
@@ -191,19 +162,22 @@ export default function GymTour() {
   };
 
   return (
-    <section className="section-padding-lg bg-gradient-to-br from-gray-50 to-slate-100">
-      <div className="max-w-7xl mx-auto container-padding">
+    <section
+      id="gym-tour"
+      className="section-padding-lg bg-gradient-to-br from-gray-50 to-slate-100"
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <FadeInUp>
-          <div className="text-center mb-20">
-            <span className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-600 to-green-600 text-white rounded-full font-bold text-base shadow-xl mb-8">
+          <div className="text-center mb-12 sm:mb-20">
+            <span className="inline-flex items-center px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-blue-600 to-green-600 text-white rounded-full font-bold text-sm sm:text-base shadow-xl mb-6 sm:mb-8">
               📸 Professional Gym Tour
             </span>
-            <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-8 text-gray-900 leading-tight">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 sm:mb-8 text-gray-900 leading-tight">
               Explore Our{" "}
               <span className="text-blue-600">Premium Facilities</span>
             </h2>
-            <p className="text-xl sm:text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
+            <p className="text-lg sm:text-xl lg:text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed px-2">
               Take a virtual tour of Fitness Factory and see our professional
               equipment, clean facilities, and certified trainers
             </p>
@@ -212,115 +186,73 @@ export default function GymTour() {
 
         {/* Category Filter */}
         <FadeInUp delay={0.2}>
-          <div className="flex flex-wrap justify-center gap-4 mb-16">
+          <div className="flex flex-wrap justify-center gap-4 mb-12 sm:mb-16">
             {categories.map((category) => (
               <button
                 key={category.id}
                 onClick={() => setSelectedCategory(category.id)}
-                className={`flex items-center space-x-2 px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 ${
+                className={`flex items-center space-x-2 px-4 sm:px-6 py-2 sm:py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 ${
                   selectedCategory === category.id
                     ? "bg-blue-600 text-white shadow-lg"
                     : "bg-white text-gray-700 hover:bg-blue-50 border-2 border-gray-200 hover:border-blue-300"
                 }`}
               >
-                <span className="text-lg">{category.icon}</span>
-                <span>{category.name}</span>
+                <span className="text-base sm:text-lg">{category.icon}</span>
+                <span className="text-sm sm:text-base">{category.name}</span>
               </button>
             ))}
           </div>
         </FadeInUp>
 
         {/* Media Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8">
           {filteredMedia.map((item, index) => (
             <ScaleIn key={item.id} delay={index * 0.1}>
-              <div className="bg-white rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
+              <div className="bg-white rounded-xl sm:rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
                 <div className="relative">
-                  {item.type === "image" ? (
-                    <div className="relative">
-                      <img
-                        src={item.thumbnail}
-                        alt={item.title}
-                        className="w-full h-64 object-cover"
-                        onError={(e) => {
-                          // Fallback to a solid color background if image fails to load
-                          e.target.style.display = "none";
-                          e.target.nextSibling.style.display = "flex";
-                        }}
-                      />
-                      {/* Fallback placeholder */}
-                      <div className="w-full h-64 bg-gradient-to-br from-blue-100 to-green-100 hidden items-center justify-center">
-                        <div className="text-center">
-                          <div className="text-4xl mb-2">🏋️‍♂️</div>
-                          <p className="text-gray-600 font-medium">Gym Image</p>
-                        </div>
-                      </div>
-                      <button
-                        onClick={() => openLightbox(index)}
-                        className="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-30 transition-all duration-300 flex items-center justify-center group"
-                      >
-                        <div className="opacity-0 group-hover:opacity-100 transition-all duration-300 bg-white rounded-full p-3">
-                          <svg
-                            className="w-6 h-6 text-blue-600"
-                            fill="currentColor"
-                            viewBox="0 0 20 20"
-                          >
-                            <path
-                              fillRule="evenodd"
-                              d="M3 4a1 1 0 011-1h3a1 1 0 011 1v3a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 13a1 1 0 011-1h3a1 1 0 011 1v3a1 1 0 01-1 1H4a1 1 0 01-1-1v-3zM12 4a1 1 0 011-1h3a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1V4zM12 13a1 1 0 011-1h3a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-3z"
-                              clipRule="evenodd"
-                            ></path>
-                          </svg>
-                        </div>
-                      </button>
-                    </div>
-                  ) : (
-                    <div className="relative">
-                      <img
-                        src={item.thumbnail}
-                        alt={item.title}
-                        className="w-full h-64 object-cover"
-                        onError={(e) => {
-                          e.target.style.display = "none";
-                          e.target.nextSibling.style.display = "flex";
-                        }}
-                      />
-                      {/* Fallback for videos */}
-                      <div className="w-full h-64 bg-gradient-to-br from-red-100 to-red-200 hidden items-center justify-center">
-                        <div className="text-center">
-                          <div className="text-4xl mb-2">🎥</div>
-                          <p className="text-gray-600 font-medium">
-                            Video Content
-                          </p>
-                        </div>
-                      </div>
-                      <button
-                        onClick={() => openVideoModal(item.videoId)}
-                        className="absolute inset-0 bg-black bg-opacity-30 hover:bg-opacity-50 transition-all duration-300 flex items-center justify-center group"
-                      >
-                        <div className="bg-red-600 rounded-full p-4 group-hover:scale-110 transition-all duration-300 shadow-2xl">
-                          <svg
-                            className="w-8 h-8 text-white ml-1"
-                            fill="currentColor"
-                            viewBox="0 0 20 20"
-                          >
-                            <path
-                              fillRule="evenodd"
-                              d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"
-                              clipRule="evenodd"
-                            ></path>
-                          </svg>
-                        </div>
-                      </button>
-                      <div className="absolute top-4 left-4 bg-red-600 text-white px-3 py-1 rounded-full text-sm font-bold">
-                        VIDEO
+                  <div className="relative">
+                    <img
+                      src={item.thumbnail}
+                      alt={item.title}
+                      className="w-full h-48 sm:h-64 object-cover"
+                      onError={(e) => {
+                        // Fallback to a solid color background if image fails to load
+                        e.target.style.display = "none";
+                        e.target.nextSibling.style.display = "flex";
+                      }}
+                    />
+                    {/* Fallback placeholder */}
+                    <div className="w-full h-48 sm:h-64 bg-gradient-to-br from-blue-100 to-green-100 hidden items-center justify-center">
+                      <div className="text-center">
+                        <div className="text-3xl sm:text-4xl mb-2">🏋️‍♂️</div>
+                        <p className="text-gray-600 font-medium text-sm sm:text-base">
+                          Gym Image
+                        </p>
                       </div>
                     </div>
-                  )}
+                    <button
+                      onClick={() => openLightbox(index)}
+                      className="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-30 transition-all duration-300 flex items-center justify-center group"
+                    >
+                      <div className="opacity-0 group-hover:opacity-100 transition-all duration-300 bg-white rounded-full p-3">
+                        <svg
+                          className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M3 4a1 1 0 011-1h3a1 1 0 011 1v3a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 13a1 1 0 011-1h3a1 1 0 011 1v3a1 1 0 01-1 1H4a1 1 0 01-1-1v-3zM12 4a1 1 0 011-1h3a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1V4zM12 13a1 1 0 011-1h3a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-3z"
+                            clipRule="evenodd"
+                          ></path>
+                        </svg>
+                      </div>
+                    </button>
+                  </div>
                 </div>
 
-                <div className="p-6">
-                  <h3 className="font-bold text-lg text-gray-900 mb-2">
+                <div className="p-4 sm:p-6">
+                  <h3 className="font-bold text-base sm:text-lg text-gray-900 mb-2">
                     {item.title}
                   </h3>
                   <p className="text-gray-600 text-sm leading-relaxed">
@@ -333,7 +265,7 @@ export default function GymTour() {
                         {[...Array(5)].map((_, i) => (
                           <svg
                             key={i}
-                            className="w-4 h-4 text-yellow-400"
+                            className="w-3 h-3 sm:w-4 sm:h-4 text-yellow-400"
                             fill="currentColor"
                             viewBox="0 0 20 20"
                           >
@@ -341,7 +273,7 @@ export default function GymTour() {
                           </svg>
                         ))}
                       </div>
-                      <span className="text-sm text-gray-500 font-medium">
+                      <span className="text-xs sm:text-sm text-gray-500 font-medium">
                         Expert Trainer
                       </span>
                     </div>
@@ -352,47 +284,28 @@ export default function GymTour() {
           ))}
         </div>
 
-        {/* If no images are showing, display this message */}
-        {filteredMedia.length === 0 && (
-          <div className="text-center py-20">
-            <div className="text-6xl mb-4">🏋️‍♂️</div>
-            <h3 className="text-2xl font-bold text-gray-700 mb-4">
-              Coming Soon!
-            </h3>
-            <p className="text-gray-600">
-              Gym tour images will be added soon. Call us for a live tour!
-            </p>
-            <a
-              href="tel:+919876543210"
-              className="inline-block mt-6 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-full transition-all duration-300"
-            >
-              📞 Call for Live Tour
-            </a>
-          </div>
-        )}
-
         {/* CTA Section */}
         <FadeInUp delay={0.6}>
-          <div className="mt-20 text-center">
-            <div className="max-w-4xl mx-auto bg-white rounded-3xl p-12 shadow-2xl border border-gray-200">
-              <div className="text-5xl mb-6">🏃‍♂️</div>
-              <h3 className="text-3xl font-bold text-gray-900 mb-4">
+          <div className="mt-12 sm:mt-20 text-center">
+            <div className="max-w-4xl mx-auto bg-white rounded-2xl sm:rounded-3xl p-8 sm:p-12 shadow-2xl border border-gray-200">
+              <div className="text-4xl sm:text-5xl mb-4 sm:mb-6">🏃‍♂️</div>
+              <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3 sm:mb-4">
                 Ready to Experience It Yourself?
               </h3>
-              <p className="text-xl text-gray-600 mb-8 leading-relaxed">
+              <p className="text-lg sm:text-xl text-gray-600 mb-6 sm:mb-8 leading-relaxed">
                 Book a free trial session and see why Fitness Factory is
                 Barapathher's most trusted fitness center
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-2xl mx-auto">
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center max-w-2xl mx-auto">
                 <a
                   href="tel:+919876543210"
-                  className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold py-4 px-8 rounded-full text-lg transition-all duration-300 transform hover:scale-105 shadow-xl"
+                  className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold py-3 sm:py-4 px-6 sm:px-8 rounded-full text-base sm:text-lg transition-all duration-300 transform hover:scale-105 shadow-xl"
                 >
                   📞 Book Free Trial Now
                 </a>
                 <a
                   href="https://wa.me/919876543210"
-                  className="bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-8 rounded-full text-lg transition-all duration-300 transform hover:scale-105 shadow-lg"
+                  className="bg-green-600 hover:bg-green-700 text-white font-bold py-3 sm:py-4 px-6 sm:px-8 rounded-full text-base sm:text-lg transition-all duration-300 transform hover:scale-105 shadow-lg"
                 >
                   💬 Chat on WhatsApp
                 </a>
@@ -400,14 +313,6 @@ export default function GymTour() {
             </div>
           </div>
         </FadeInUp>
-
-        {/* Video Modal */}
-        <ModalVideo
-          channel="youtube"
-          isOpen={isModalOpen}
-          videoId="ScMzIvxBSi4"
-          onClose={() => setIsModalOpen(false)}
-        />
 
         {/* Fixed Image Lightbox */}
         {lightboxOpen && (
@@ -422,7 +327,7 @@ export default function GymTour() {
               {/* Close Button */}
               <button
                 onClick={closeLightbox}
-                className="absolute -top-12 right-0 text-white text-3xl hover:text-gray-300 transition-colors z-10 bg-black bg-opacity-50 rounded-full w-12 h-12 flex items-center justify-center"
+                className="absolute -top-8 sm:-top-12 right-0 text-white text-2xl sm:text-3xl hover:text-gray-300 transition-colors z-10 bg-black bg-opacity-50 rounded-full w-8 h-8 sm:w-12 sm:h-12 flex items-center justify-center"
                 aria-label="Close"
               >
                 ✕
@@ -440,14 +345,14 @@ export default function GymTour() {
               />
 
               {/* Image Info */}
-              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black via-black/80 to-transparent text-white p-6 rounded-b-lg">
-                <h3 className="text-xl font-bold mb-2">
+              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black via-black/80 to-transparent text-white p-4 sm:p-6 rounded-b-lg">
+                <h3 className="text-lg sm:text-xl font-bold mb-1 sm:mb-2">
                   {filteredMedia[selectedImage]?.title}
                 </h3>
-                <p className="text-gray-300">
+                <p className="text-gray-300 text-sm sm:text-base">
                   {filteredMedia[selectedImage]?.description}
                 </p>
-                <div className="mt-3 text-sm text-gray-400">
+                <div className="mt-2 sm:mt-3 text-xs sm:text-sm text-gray-400">
                   Image {selectedImage + 1} of {filteredMedia.length}
                 </div>
               </div>
@@ -456,7 +361,7 @@ export default function GymTour() {
               {selectedImage > 0 && (
                 <button
                   onClick={() => navigateImage("prev")}
-                  className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white text-2xl hover:text-gray-300 bg-black bg-opacity-50 rounded-full w-12 h-12 flex items-center justify-center transition-all duration-300 hover:bg-opacity-70"
+                  className="absolute left-2 sm:left-4 top-1/2 transform -translate-y-1/2 text-white text-xl sm:text-2xl hover:text-gray-300 bg-black bg-opacity-50 rounded-full w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center transition-all duration-300 hover:bg-opacity-70"
                   aria-label="Previous image"
                 >
                   ←
@@ -465,7 +370,7 @@ export default function GymTour() {
               {selectedImage < filteredMedia.length - 1 && (
                 <button
                   onClick={() => navigateImage("next")}
-                  className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white text-2xl hover:text-gray-300 bg-black bg-opacity-50 rounded-full w-12 h-12 flex items-center justify-center transition-all duration-300 hover:bg-opacity-70"
+                  className="absolute right-2 sm:right-4 top-1/2 transform -translate-y-1/2 text-white text-xl sm:text-2xl hover:text-gray-300 bg-black bg-opacity-50 rounded-full w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center transition-all duration-300 hover:bg-opacity-70"
                   aria-label="Next image"
                 >
                   →
@@ -473,10 +378,12 @@ export default function GymTour() {
               )}
 
               {/* Keyboard Hint */}
-              <div className="absolute top-4 left-4 text-white text-sm bg-black bg-opacity-50 rounded-lg px-3 py-2">
+              <div className="absolute top-2 sm:top-4 left-2 sm:left-4 text-white text-xs sm:text-sm bg-black bg-opacity-50 rounded-lg px-2 sm:px-3 py-1 sm:py-2">
                 Press{" "}
-                <kbd className="bg-white text-black px-1 rounded">ESC</kbd> to
-                close
+                <kbd className="bg-white text-black px-1 rounded text-xs">
+                  ESC
+                </kbd>{" "}
+                to close
               </div>
             </div>
           </div>
